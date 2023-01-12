@@ -1,9 +1,9 @@
 import { async } from "@firebase/util"
 import { signInWithEmailLink } from "firebase/auth"
-import { registerUserWithEmailPassword, signInWithGoogle } from "../../firebase/providers"
+import { loginWithEmailPassword, registerUserWithEmailPassword, signInWithGoogle } from "../../firebase/providers"
 import { checkingCredentials, login, logout } from "./authSlice"
 
-export const checkingAuthentication = ( email, password ) => {
+export const checkingAuthentication = () => {
     return async ( dispatch ) => {
         dispatch( checkingCredentials() )
     }
@@ -13,7 +13,6 @@ export const startGoogleSignIn = () => {
     return async ( dispatch ) => {
         dispatch( checkingCredentials() )
         const result = await signInWithGoogle();
-        console.log( result )
         if ( !result.ok ) {
             return dispatch( logout( result.errorMessage ) )
         }
@@ -30,5 +29,14 @@ export const startCreatingUserWithEmailPassword = ( { email, password, displayNa
         if ( !ok ) return dispatch( logout( errorMessage ) );
 
         dispatch( login( { uid, displayName, email, photoURL } ) );
+    }
+}
+
+export const startLoginWithEmailPassword = ( { email, password } ) => {
+    return async ( dispatch ) => {
+        dispatch( checkingCredentials() );
+        const { ok, uid, photoURL, displayName, errorMessage } = await loginWithEmailPassword( { email, password } );
+        if ( !ok ) return dispatch( logout( errorMessage ) );
+        dispatch( login( { uid, photoURL, displayName } ) )
     }
 }

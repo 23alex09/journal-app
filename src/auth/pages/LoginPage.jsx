@@ -1,27 +1,27 @@
 import { Link as RouterLink } from 'react-router-dom'
 import { Google } from "@mui/icons-material"
-import { Button, Grid, Link, TextField, Typography } from "@mui/material"
+import { Alert, Button, Grid, Link, TextField, Typography } from "@mui/material"
 import { AuthLayout } from '../layout/AuthLayout'
 import { useForm } from '../../hooks'
-import { checkingAuthentication, startGoogleSignIn } from '../../store/auth/thunks'
+import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth/thunks'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMemo } from 'react'
 
 export const LoginPage = () => {
 
-    const { status } = useSelector( ( state ) => state.auth )
+    const { status, errorMessage } = useSelector( ( state ) => state.auth )
     const dispatch = useDispatch()
 
     const { email, password, onInputChange, formState } = useForm( {
         email: 'alejandro@google.com',
-        password: '1234'
+        password: '123456'
     } )
 
     const isAthenticated = useMemo( () => status === 'checking', [ status ] )
 
     const onSubmit = ( event ) => {
         event.preventDefault();
-        dispatch( checkingAuthentication( email, password ) )
+        dispatch( startLoginWithEmailPassword( { email, password } ) )
     }
 
     const onGoogleSignIn = () => {
@@ -55,11 +55,16 @@ export const LoginPage = () => {
                             value={ password }
                             onChange={ onInputChange } />
                     </Grid>
+                    <Grid container sx={ { mt: 2, mb: 1 } } display={ !!errorMessage ? '' : 'none' }>
+                        <Grid item xs={ 12 }  >
+                            <Alert severity='error'>{ errorMessage }</Alert>
+                        </Grid>
+                    </Grid>
 
                     <Grid
                         container
                         spacing={ 2 }
-                        sx={ { mb: 2, mt: 1, } }
+                        sx={ { mb: 2, mt: 1 } }
                     >
                         <Grid item xs={ 12 } sm={ 6 }>
                             <Button
@@ -101,7 +106,7 @@ export const LoginPage = () => {
                 </Grid>
             </form>
 
-        </AuthLayout>
+        </AuthLayout >
 
     )
 }
