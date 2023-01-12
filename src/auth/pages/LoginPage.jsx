@@ -13,7 +13,7 @@ export const LoginPage = () => {
     const dispatch = useDispatch()
 
     const { email, password, onInputChange, formState } = useForm( {
-        email: 'alejandro@google.com',
+        email: 'maicol@google.com',
         password: '123456'
     } )
 

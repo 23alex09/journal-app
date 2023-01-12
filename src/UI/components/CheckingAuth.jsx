@@ -10,7 +10,7 @@ export const CheckingAuth = () => {
             justifyContent='center'
             sx={ { minHeight: '100vh', backgroundColor: 'primary.main', padding: 4 } } //Esta propiedad es para trabajar con la propiedad style pero nos deja acceder al theme
         >
-            <Grid item justifyContent='center'>
+            <Grid container direction='row' justifyContent='center'>
                 <CircularProgress color='warning' />
             </Grid>
         </Grid>
