@@ -1,10 +1,16 @@
 import { TurnedInNot } from "@mui/icons-material"
 import { Box, Divider, Drawer, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from "@mui/material"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { setActiveNote } from "../../store/journal/journalSlice";
+import { NoteItem } from "./NoteItem";
 
 export const SideBar = ( { drawerWidth = 240 } ) => {
 
     const { displayName } = useSelector( state => state.auth );
+    const { notes } = useSelector( state => state.journal );
+    const dispatch = useDispatch()
+
+
 
     return (
         <Box
@@ -36,18 +42,8 @@ export const SideBar = ( { drawerWidth = 240 } ) => {
                 <Divider />
                 <List>
                     {
-                        [ 'Enero', 'Febrero', 'Marzo', 'Abril' ].map( text => (
-                            <ListItem key={ text } disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <TurnedInNot />
-                                    </ListItemIcon>
-                                    <Grid container>
-                                        <ListItemText primary={ text } />
-                                        <ListItemText secondary='Don federico le dijo a su mujer que si se le caia la canica que tenia en la mano el teide iba a erupcionar' />
-                                    </Grid>
-                                </ListItemButton>
-                            </ListItem>
+                        notes.map( note => (
+                            <NoteItem key={ note.id } { ...note } />
                         ) )
                     }
                 </List>

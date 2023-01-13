@@ -7,15 +7,17 @@ import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth
 import { useDispatch, useSelector } from 'react-redux'
 import { useMemo } from 'react'
 
+const formData = {
+    email: '',
+    password: ''
+}
+
 export const LoginPage = () => {
 
     const { status, errorMessage } = useSelector( ( state ) => state.auth )
     const dispatch = useDispatch()
 
-    const { email, password, onInputChange, formState } = useForm( {
-        email: 'maicol@google.com',
-        password: '123456'
-    } )
+    const { email, password, onInputChange, formState } = useForm( formData )
 
     const isAthenticated = useMemo( () => status === 'checking', [ status ] )
 
@@ -32,7 +34,9 @@ export const LoginPage = () => {
     return (
         <AuthLayout title='Login'>
 
-            <form onSubmit={ onSubmit }>
+            <form
+                className="animate__animated animate__fadeIn animate__faster"
+                onSubmit={ onSubmit }>
                 <Grid container>
                     {/* Al igual que en boostrap aqui tenemos 12 posiciones y en el xs indicamos cuantas de esas columnas ocupa el elemento para pantallas pequeñas. mb se usa para pantallas de tamaño mediano */ }
                     <Grid item xs={ 12 } sx={ { mt: 2 } }>
