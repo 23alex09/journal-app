@@ -1,6 +1,7 @@
 import { async } from "@firebase/util"
 import { signInWithEmailLink } from "firebase/auth"
 import { loginWithEmailPassword, logoutFirebase, registerUserWithEmailPassword, signInWithGoogle } from "../../firebase/providers"
+import { clearActiveNote } from "../journal"
 import { checkingCredentials, login, logout } from "./authSlice"
 
 export const checkingAuthentication = () => {
@@ -37,13 +38,14 @@ export const startLoginWithEmailPassword = ( { email, password } ) => {
         dispatch( checkingCredentials() );
         const { ok, uid, photoURL, displayName, errorMessage } = await loginWithEmailPassword( { email, password } );
         if ( !ok ) return dispatch( logout( errorMessage ) );
-        dispatch( login( { uid, photoURL, displayName } ) )
+        dispatch( login( { uid, photoURL, displayName } ) );
     }
 }
 
 export const startLogout = () => {
     return async ( dispatch ) => {
         await logoutFirebase();
-        dispatch( logout )
+        dispatch( logout() );
+        dispatch( clearActiveNote() )
     }
 }
