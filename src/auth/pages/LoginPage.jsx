@@ -7,6 +7,7 @@ import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth
 import { useDispatch, useSelector } from 'react-redux'
 import { useMemo } from 'react'
 
+//Para evitar que se dispare el efecto del useForm que depende del initial form
 const formData = {
     email: '',
     password: ''
